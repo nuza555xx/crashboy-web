@@ -7,6 +7,9 @@ const nextConfig = {
         domains: ['storage.googleapis.com'],
         minimumCacheTTL: 60,
     },
+    env: {
+        BASE_API_URL: process.env.BASE_API_URL,
+    },
 };
 
 module.exports = nextConfig;
