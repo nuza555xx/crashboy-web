@@ -1,0 +1,2 @@
+// Define action types
+export const SET_PROFILE = 'SET_PROFILE';

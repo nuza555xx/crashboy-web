@@ -1,0 +1,54 @@
+@import url('@fontsource/prompt');
+
+@import 'variables.module';
+
+@media (prefers-color-scheme: dark) {
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    font-family: $font-family;
+    font-weight: $font-weight;
+    font-size: $font-size;
+    min-height: $min-height;
+    max-width: $max-width;
+    scroll-behavior: smooth;
+    background-color: initial;
+}
+
+.page-container {
+    min-height: calc($min-height - 4.8em - 56px);
+    @media screen and (max-width: 899px) {
+        min-height: calc($min-height - 3.9em - 56px);
+    }
+}
+
+.auth-container {
+    min-height: calc($min-height - 56px);
+}
+
+.wipwip {
+    font-size: 2em;
+    animation: wipwip 1s linear infinite;
+}
+@keyframes wipwip {
+    0%,
+    100% {
+        text-shadow: -1.5px -1.5px 0 #0ff, 1.5px 1.5px 0 #f00;
+    }
+    25% {
+        text-shadow: 1.5px 1.5px 0 #0ff, -1.5px -1.5px 0 #f00;
+    }
+    50% {
+        text-shadow: 1.5px -1.5px 0 #0ff, 1.5px -1.5px 0 #f00;
+    }
+    75% {
+        text-shadow: -1.5px 1.5px 0 #0ff, -1.5px 1.5px 0 #f00;
+    }
+}

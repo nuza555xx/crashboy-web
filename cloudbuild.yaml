@@ -1,0 +1,33 @@
+steps:
+  - name: "node:18-alpine"
+    entrypoint: "npm"
+    args: ["install"]
+  - name: "node:18-alpine"
+    entrypoint: "npm"
+    args: ["run", "build"]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest",
+        ".",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest"]
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "run",
+        "deploy",
+        "madify-web",
+        "--image",
+        "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest",
+        "--region",
+        "asia-southeast1",
+        "--allow-unauthenticated",
+      ]
+
+images:
+  - "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest"
