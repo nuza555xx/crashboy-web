@@ -8,13 +8,13 @@ import store from '@crashboy/store/store';
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Provider store={store}>
                 <CrashBoyLayout>
                     <Component {...pageProps} />
                 </CrashBoyLayout>
-            </ThemeProvider>
-        </Provider>
+            </Provider>
+        </ThemeProvider>
     );
 }

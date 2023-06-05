@@ -26,23 +26,25 @@ export default function SearchPage() {
     useEffect(() => {
         if (textSearch) setText(textSearch as string);
         setLoading(true);
-        fetchSearchData(text, { limit: 25 })
-            .then((response) => {
-                setVehicles(response.payload);
-                setNext(response.meta?.next ?? 0);
-                if (response.payload.length) setLoadMore(true);
-            })
-            .catch((error) => {
-                console.error(error);
-                setLoadMore(false);
-            })
-            .finally(() => {
-                setInitialPage(true);
-                setTimeout(() => {
-                    setLoading(false);
-                }, 1000);
-            });
-    }, [text, textSearch]);
+
+        if (!vehicles.length)
+            fetchSearchData(text, { limit: 25 })
+                .then((response) => {
+                    setVehicles(response.payload);
+                    setNext(response.meta?.next ?? 0);
+                    if (response.payload.length) setLoadMore(true);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setLoadMore(false);
+                })
+                .finally(() => {
+                    setInitialPage(true);
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 1000);
+                });
+    }, [text, textSearch, vehicles]);
 
     useEffect(() => {
         function handleScroll() {
@@ -106,7 +108,7 @@ export default function SearchPage() {
     async function fetchSearchData(value: string, options: { next?: number; limit: number }) {
         return requestAPI<Response<Vehicle[]>>({
             method: 'GET',
-            url: `${process.env.BASE_API_URL}:3003/api/vehicle/search`,
+            url: `https://crashboy.tech/api/vehicle/search`,
             params: {
                 search: value,
                 skip: options?.next,
@@ -209,7 +211,9 @@ export default function SearchPage() {
                         }}
                     >
                         <Box sx={{ display: 'flex' }}>
-                            <CircularProgress size={40} />
+                            <Fade in={true}>
+                                <CircularProgress size={40} />
+                            </Fade>
                         </Box>
                     </Container>
                 ) : (
@@ -226,9 +230,11 @@ export default function SearchPage() {
                             pt: 2,
                         }}
                     >
-                        <Typography variant='h3' sx={{ pb: 1, fontSize: '1.2rem' }}>
-                            ไม่พบข้อมูล กรุณาลองใหม่อีกครั้ง
-                        </Typography>
+                        <Fade in={true}>
+                            <Typography variant='h3' sx={{ pb: 1, fontSize: '1.2rem' }}>
+                                ไม่พบข้อมูล
+                            </Typography>
+                        </Fade>
                     </Container>
                 ) : (
                     ''

@@ -11,7 +11,7 @@ import router from 'next/router';
 import { Login } from '@crashboy/interfaces';
 import { v4 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { setProfile } from '@crashboy/store/user/user.action';
+import { setProfile } from '@crashboy/store/user';
 
 export default function LoginPage() {
     const [email, setEmail] = useState<string>('');
@@ -20,14 +20,14 @@ export default function LoginPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!sessionStorage.getItem('uuid')) sessionStorage.setItem('uuid', v4());
+        if (!localStorage.getItem('uuid')) localStorage.setItem('uuid', v4());
     }, []);
 
     const loginWithEmail = debounce(() => {
         setOpen(true);
         requestAPI<Login>({
             method: 'POST',
-            url: `${process.env.BASE_API_URL}:3001/api/authentication/login-with-email`,
+            url: `https://crashboy.tech/api/authentication/login-with-email`,
             data: {
                 email: email,
                 password: password,

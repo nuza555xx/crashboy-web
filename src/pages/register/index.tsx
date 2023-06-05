@@ -51,7 +51,7 @@ export default function RegisterPage() {
                         ลงชื่อเข้าใช้
                     </Typography>
 
-                    <Box sx={{ my: 2 }}>
+                    {/* <Box sx={{ my: 2 }}>
                         <CrashBoyInput
                             id='email'
                             label='อีเมล'
@@ -66,7 +66,7 @@ export default function RegisterPage() {
                             type='password'
                             isError={false}
                         ></CrashBoyInput>
-                    </Box>
+                    </Box> */}
                     <Box sx={{ my: 2 }}>
                         <Button
                             sx={{ width: '100%', minHeight: '50px' }}

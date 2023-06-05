@@ -1,15 +1,15 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './user/user.reducer';
-import { ProfileState } from './user/user.interface';
+import { UserState } from './user/user.interface';
 
 // Define RootState type
 export interface RootState {
-    profile: ProfileState;
+    user: UserState;
 }
 
 // Combine all reducers
 const rootReducer = combineReducers({
-    profile: userReducer,
+    user: userReducer,
 });
 
 // Create the store

@@ -10,24 +10,29 @@ steps:
       [
         "build",
         "-t",
-        "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest",
+        "asia-southeast1-docker.pkg.dev/$PROJECT_ID/crashboy/crashboy-web:latest",
         ".",
       ]
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest"]
+    args:
+      ["push", "asia-southeast1-docker.pkg.dev/$PROJECT_ID/crashboy/crashboy-web:latest"]
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
       [
         "run",
         "deploy",
-        "madify-web",
+        "crashboy-web",
         "--image",
-        "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest",
+        "asia-southeast1-docker.pkg.dev/$PROJECT_ID/crashboy/crashboy-web:latest",
         "--region",
         "asia-southeast1",
         "--allow-unauthenticated",
+        "--min-instances=1",
+        "--max-instances=2",
+        "--memory=256Mi",
       ]
 
-images:
-  - "asia-docker.pkg.dev/$PROJECT_ID/madify/madify-web:latest"
+logsBucket: "gs://crashboy-388808_cloudbuild"
+options:
+  logging: GCS_ONLY

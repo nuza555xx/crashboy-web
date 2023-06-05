@@ -1,14 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     distDir: 'dist',
-    swcMinify: true,
+    // swcMinify: true,
     images: {
         domains: ['storage.googleapis.com'],
-        minimumCacheTTL: 60,
     },
     env: {
-        BASE_API_URL: process.env.BASE_API_URL,
+        BASE_API_URL: process.env.NEXT_PUBLIC_BASE_API_URL,
     },
 };
 

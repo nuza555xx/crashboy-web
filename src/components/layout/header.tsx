@@ -22,6 +22,7 @@ import { theme } from '@crashboy/components/theme';
 import { selectProfile } from '@crashboy/store/user/user.selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { fetchProfile } from '@crashboy/store/user';
 
 const pages = [
     {
@@ -58,10 +59,12 @@ export default function CrashBoyHeader() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (Object.values(profile).every((value) => value)) {
+        if (!Object.values(profile ?? {}).every((e) => e) && sessionStorage.getItem('accessToken')) dispatch(fetchProfile() as any);
+        if (Object.values(profile ?? {}).every((e) => e) && sessionStorage.getItem('accessToken')) {
             setAuth(true);
         }
-    }, [profile]);
+        
+    }, [dispatch, profile]);
 
     function handleOpenUserMenu(event: MouseEvent<HTMLElement>) {
         setAnchorElUser(event.currentTarget);
@@ -79,7 +82,10 @@ export default function CrashBoyHeader() {
         };
     }
 
-    function handleCloseUserMenu() {}
+    function handleClickMenu(open: boolean, path?: string) {
+        setAnchorNav(open);
+        if (path) router.push(path);
+    }
 
     return (
         <>
@@ -136,19 +142,10 @@ export default function CrashBoyHeader() {
                                 </Box>
                                 {pages.map((page) => (
                                     <ListItem key={page.name} disablePadding>
-                                        <ListItemButton>
-                                            {/* <ListItemIcon>
-                                                        {index % 2 === 0 ? (
-                                                            <InboxIcon />
-                                                        ) : (
-                                                            <MailIcon />
-                                                        )}
-                                                    </ListItemIcon> */}
-
-                                            <ListItemText
-                                                primary={page.name}
-                                                onClick={toggleDrawer(false)}
-                                            />
+                                        <ListItemButton
+                                            onClick={() => handleClickMenu(false, page.path)}
+                                        >
+                                            <ListItemText primary={page.name} />
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
@@ -185,9 +182,15 @@ export default function CrashBoyHeader() {
                                         src='https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'
                                         sx={{ width: 30, height: 30 }}
                                     />
-                                    <Typography color='text.secondary' component='p' sx={{ ml: 1 }}>
-                                        {profile?.displayName}
-                                    </Typography>
+                                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                                        <Typography
+                                            color='text.secondary'
+                                            component='p'
+                                            sx={{ ml: 1 }}
+                                        >
+                                            {profile?.displayName}
+                                        </Typography>
+                                    </Box>
                                 </Button>
                                 <Menu
                                     sx={{ mt: '45px' }}
@@ -203,7 +206,7 @@ export default function CrashBoyHeader() {
                                         horizontal: 'right',
                                     }}
                                     open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
+                                    onClose={() => setAnchorElUser(null)}
                                 >
                                     {settings.map((setting) => (
                                         <MenuItem
